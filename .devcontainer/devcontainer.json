@@ -1,0 +1,22 @@
+{
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			"VARIANT": "humble"
+		}
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+	"workspaceFolder": "/workspace",
+	"customizations": {
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-vscode.cpptools-extension-pack",
+				"ms-iot.vscode-ros",
+				"mhutchie.git-graph"
+			],
+			"settings": {}
+		}
+	},
+	"remoteUser": "vscode"
+}
