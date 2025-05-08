@@ -25,6 +25,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     # * We want to do this before cleanup to keep the "layer" small.             *
     # ****************************************************************************
         bash-completion \
+        ros-humble-rmw-cyclonedds-cpp \
     && echo "\n\
 source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash\n\
 source /opt/ros/\${ROS_DISTRO}/setup.bash\n\
