@@ -17,28 +17,33 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-class MinimalSubscriber : public rclcpp::Node
+class MinimalForwarder : public rclcpp::Node
 {
 public:
-  MinimalSubscriber()
-  : Node("minimal_subscriber")
+  MinimalForwarder()
+  : Node("minimal_forwarder")
   {
+    publisher_ = this->create_publisher<std_msgs::msg::String>("forwarded_topic", 10);
     auto topic_callback =
       [this](std_msgs::msg::String::UniquePtr msg) -> void {
-        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+        auto forwarding_message = std_msgs::msg::String();
+        forwarding_message.data = "Fwd: " + msg->data;
+        this->publisher_->publish(forwarding_message);
+        RCLCPP_INFO(this->get_logger(), "I forwared: '%s'", forwarding_message.data.c_str());
       };
     subscription_ =
-      this->create_subscription<std_msgs::msg::String>("forwarded_topic", 10, topic_callback);
+      this->create_subscription<std_msgs::msg::String>("topic", 10, topic_callback);
   }
 
 private:
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<MinimalSubscriber>());
+  rclcpp::spin(std::make_shared<MinimalForwarder>());
   rclcpp::shutdown();
   return 0;
 }

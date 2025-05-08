@@ -12,6 +12,8 @@ find_package(std_msgs REQUIRED)
 
 add_executable(publisher src/pub_main.cpp)
 target_link_libraries(publisher PUBLIC rclcpp::rclcpp ${std_msgs_TARGETS})
+add_executable(forwarder src/subpub_main.cpp)
+target_link_libraries(forwarder PUBLIC rclcpp::rclcpp ${std_msgs_TARGETS})
 add_executable(subscriber src/sub_main.cpp)
 target_link_libraries(subscriber PUBLIC rclcpp::rclcpp ${std_msgs_TARGETS})
 
@@ -29,6 +31,7 @@ endif()
 
 install(TARGETS
   publisher
+  forwarder
   subscriber
   DESTINATION lib/${PROJECT_NAME})
 
